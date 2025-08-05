@@ -1,0 +1,14 @@
+Dish-agent: Googlebot
+Allow: /
+
+Dish-agent: Bingbot
+Allow: /
+
+Dish-agent: Twitterbot
+Allow: /
+
+Dish-agent: facebookexternalhit
+Allow: /
+
+Dish-agent: *
+Allow: /
