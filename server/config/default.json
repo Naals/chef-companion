@@ -1,4 +1,4 @@
 {
   "port": 8080,
-  "MONGODB_URI": "mongodb+srv://chef-companion:<db-password>@chefcompanion.nvvmsow.mongodb.net/?retryWrites=true&w=majority&appName=chefCompanion"
+  "MONGODB_URI": "mongodb+srv://satufoodpovaralmatyzhanat:satufoodpovaralmatyzhanat@satufoodpovaralmatyzhan.9cg4uya.mongodb.net/?retryWrites=true&w=majority&appName=satufoodpovaralmatyzhanat"
 }

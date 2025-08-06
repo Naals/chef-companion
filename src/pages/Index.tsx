@@ -35,24 +35,34 @@ const Index = () => {
     const [savedLists, setSavedLists] = useLocalStorage<SavedList[]>('satufood-saved-lists', []);
     const [customDishes, setCustomDishes] = useLocalStorage<Dish[]>('satufood-custom-dishes', []);
     const [activeTab, setActiveTab] = useState<"menu" | "cart" | "saved">("menu");
+    const [needsRefresh, setNeedsRefresh] = useState(false);
     const [createOpen, setCreateOpen] = useState(false);
     const [loading, setLoading] = useState(true);
     const {toast} = useToast();
 
+    const fetchMenu = async () => {
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:8080/api/dish/");
+            const data = await res.json();
+            setMenu(data);
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchMenu = async () => {
-            try {
-                const res = await fetch("http://localhost:8080/api/dish/");
-                const data = await res.json();
-                setMenu(data);
-            } catch (err) {
-                console.error(err);
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchMenu();
     }, []);
+
+    useEffect(() => {
+        if (needsRefresh) {
+            setSearchTerm('');
+            fetchMenu().then(() => setNeedsRefresh(false));
+        }
+    }, [needsRefresh]);
 
     const allDishes = [...menu, ...customDishes];
 
@@ -153,10 +163,7 @@ const Index = () => {
                                         open={createOpen}
                                         onOpenChange={setCreateOpen}
                                         onCreated={() => {
-                                            // Re-fetch menu when a new dish is created
-                                            fetch("http://localhost:8080/api/dish/")
-                                                .then((res) => res.json())
-                                                .then((data) => setMenu(data));
+                                            setNeedsRefresh(true);
                                         }}
                                     />
 
@@ -192,6 +199,7 @@ const Index = () => {
                                     initialQuantity={
                                         selectedDishes.find(item => item.dish.id === dish.id)?.quantity
                                     }
+                                    onRefresh={() => setNeedsRefresh(true)}
                                 />
                             ))}
                         </div>
@@ -282,7 +290,6 @@ const Index = () => {
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
                 selectedCount={selectedDishes.length}
-                savedListsCount={savedLists.length}
             />
         </div>
     );

@@ -7,7 +7,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Plus, Minus, Pencil, Trash2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Dish } from "@/data/menu";
-import { DishCreateDialog } from "./DishCreateDialog";
 
 interface DishCardProps {
   dish: Dish;
@@ -22,7 +21,6 @@ export function DishCard({ dish, onAdd, isSelected, initialQuantity, onRefresh }
   const [quantity, setQuantity] = useState(initialQuantity || 1);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedDishes, setSelectedDishes] = useState<{ dish: Dish; quantity: number }[]>([]);
   const [editedDishName, setEditedDishName] = useState(dish.name);
   const [editedIngredients, setEditedIngredients] = useState([...dish.ingredients]);
 
@@ -76,7 +74,7 @@ export function DishCard({ dish, onAdd, isSelected, initialQuantity, onRefresh }
         setIsEditOpen(false);
         onRefresh?.();
       } else {
-        throw new Error("Update failed");
+          throw new Error("Update failed");
       }
     } catch (e) {
       console.error(e);
@@ -91,7 +89,7 @@ export function DishCard({ dish, onAdd, isSelected, initialQuantity, onRefresh }
       if (res.ok) {
         toast({ title: "Өшірілді", description: "Диш сәтті өшірілді ✅" });
         setIsDeleteOpen(false);
-        onRefresh?.();
+        onRefresh();
       } else {
         throw new Error("Delete failed");
       }

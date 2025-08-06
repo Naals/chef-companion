@@ -1,19 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChefHat, ShoppingCart, Save, Plus } from "lucide-react";
+import { ChefHat, ShoppingCart } from "lucide-react";
 
 interface BottomNavigationProps {
   activeTab: "menu" | "cart" | "saved";
   onTabChange: (tab: "menu" | "cart" | "saved") => void;
   selectedCount: number;
-  savedListsCount: number;
 }
 
 export function BottomNavigation({ 
   activeTab, 
   onTabChange, 
   selectedCount,
-  savedListsCount 
 }: BottomNavigationProps) {
   const tabs = [
     {
@@ -25,19 +23,13 @@ export function BottomNavigation({
       id: "cart" as const,
       label: "Таңдалған",
       icon: ShoppingCart,
-      count: selectedCount,
-    },
-    {
-      id: "saved" as const,
-      label: "Сақталған",
-      icon: Save,
-      count: savedListsCount,
-    },
+      count: selectedCount === 0 ? undefined : selectedCount,
+    }
   ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg z-50 pb-safe">
-      <div className="grid grid-cols-3 gap-1 p-2">
+      <div className="grid grid-cols-2 gap-1 p-2">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;

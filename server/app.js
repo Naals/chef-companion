@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import config from 'config';
 import chalk from 'chalk';
-import initDatabase from './startUp/initDatabase.js';
 import routes from './routes/index.js';
 import cors from 'cors'; // ✅ Add this
 
@@ -30,9 +29,6 @@ if (process.env.NODE_ENV === 'production') {
 
 async function start() {
     try {
-        mongoose.connection.once('open', () => {
-            initDatabase();
-        });
 
         await mongoose.connect(config.get("MONGODB_URI"))
             .then(() => {

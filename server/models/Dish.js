@@ -3,7 +3,7 @@ import {Schema, model} from "mongoose";
 const userSchema = new Schema({
     id: { type: String },
     name: { type: String },
-    category: { type: String, required: true },
+    category: { type: String },
     ingredients: { type: Schema.Types.Array, ref: "Ingredient" },
 }, {
     timestamps: true,
