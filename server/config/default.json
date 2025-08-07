@@ -1,4 +1,6 @@
 {
   "port": 8080,
-  "MONGODB_URI": "mongodb+srv://satufoodpovaralmatyzhanat:satufoodpovaralmatyzhanat@satufoodpovaralmatyzhan.9cg4uya.mongodb.net/?retryWrites=true&w=majority&appName=satufoodpovaralmatyzhanat"
+  "MYSQL_DB": "chef_companion_db",
+  "MYSQL_USER": "chef_user",
+  "MYSQL_PASSWORD": "chef_pass"
 }

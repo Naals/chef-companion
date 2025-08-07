@@ -1,13 +1,16 @@
-import {Schema, model} from "mongoose";
+import { DataTypes } from 'sequelize';
+import sequelize from '../database/db.js';
 
-const userSchema = new Schema({
-    id: { type: String },
-    name: { type: String },
-    category: { type: String },
-    ingredients: { type: Schema.Types.Array, ref: "Ingredient" },
+const Dish = sequelize.define('Dish', {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    category: {
+        type: DataTypes.STRING,
+    },
 }, {
     timestamps: true,
 });
 
-const Dish = model("Dish", userSchema);
 export default Dish;

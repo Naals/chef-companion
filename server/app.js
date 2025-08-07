@@ -1,15 +1,17 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import config from 'config';
 import chalk from 'chalk';
 import routes from './routes/index.js';
+import sequelize from './database/db.js';
+import './models/Dish.js';
+import './models/Ingredient.js';
+// import initDatabase from "./startUp/initDatabase.js";
 import cors from 'cors'; // ✅ Add this
 
 const app = express();
 const port = config.get('port') || 3001;
 
-//user -> chef-companion
-//password -> 3ofqo4xitDbeKnQE
+
 
 // ✅ Add this before routes
 app.use(cors({
@@ -30,17 +32,16 @@ if (process.env.NODE_ENV === 'production') {
 async function start() {
     try {
 
-        await mongoose.connect(config.get("MONGODB_URI"))
-            .then(() => {
-                console.log(chalk.green.bold('Connected to MongoDB successfully'));
-            })
-            .catch((err) => {
-                console.error('MongoDB connection error:', err);
-            });
+        await sequelize.authenticate();
+        await sequelize.sync({ alter: true });
+        console.log('✅ DB synced');
+
+        // await initDatabase(); // <- seeding mock data here
 
         app.listen(port, () => {
-            console.log(chalk.green(`Server started on port ${port}`));
+            console.log(`🚀 Server running on port ${port}`);
         });
+
     } catch (error) {
         console.log(chalk.red.bold('Error: ' + error.message));
     }

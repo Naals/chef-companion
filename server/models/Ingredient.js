@@ -1,12 +1,25 @@
-import {Schema, model} from "mongoose";
+import { DataTypes } from 'sequelize';
+import sequelize from '../database/db.js';
+import Dish from './Dish.js';
 
-const tokenSchema = new Schema({
-    name: { type: String, required: true },
-    amount: { type: Number },
-    unit: { type: String },
+const Ingredient = sequelize.define('Ingredient', {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    amount: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+    },
+    unit: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 }, {
     timestamps: true,
 });
 
-const Ingredient = model("Ingredient", tokenSchema);
-export default Ingredient ;
+Dish.hasMany(Ingredient, { as: 'ingredients', foreignKey: 'dishId', onDelete: 'CASCADE' });
+Ingredient.belongsTo(Dish, { foreignKey: 'dishId' });
+
+export default Ingredient;

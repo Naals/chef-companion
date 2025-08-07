@@ -57,7 +57,7 @@ export function DishCard({ dish, onAdd, isSelected, initialQuantity, onRefresh }
   const handleEditSave = async () => {
     try {
       //@ts-ignore
-      const res = await fetch(`http://localhost:8080/api/dish/${dish._id}`, {
+      const res = await fetch(`http://localhost:8080/api/dish/${dish.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export function DishCard({ dish, onAdd, isSelected, initialQuantity, onRefresh }
   const handleDeleteConfirm = async () => {
     try {
       //@ts-ignore
-      const res = await fetch(`http://localhost:8080/api/dish/${dish._id}`, { method: "DELETE" });
+      const res = await fetch(`http://localhost:8080/api/dish/${dish.id}`, { method: "DELETE" });
       if (res.ok) {
         toast({ title: "Өшірілді", description: "Диш сәтті өшірілді ✅" });
         setIsDeleteOpen(false);

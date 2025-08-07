@@ -1,6 +1,7 @@
 // dish.routes.js
 import express from 'express';
 import Dish from "../models/Dish.js";
+import Ingredient from "../models/Ingredient.js";
 
 const router = express.Router();
 
@@ -8,8 +9,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     console.log(req.query);
     try {
-        const list = await Dish.find();
-        res.status(200).json(list);
+        const dishes = await Dish.findAll({ include: ['ingredients'] });
+        res.status(200).json(dishes);
+
     } catch (e) {
         console.error(e);
         res.status(500).send('Server error');
@@ -19,7 +21,7 @@ router.get('/', async (req, res) => {
 // GET dish by ID
 router.get('/:id', async (req, res) => {
     try {
-        const dish = await Dish.findById(req.params.id);
+        const dish = await Dish.findByPk(req.params.id, { include: ['ingredients'] });
         if (!dish) return res.status(404).json({ message: 'Dish not found' });
         res.status(200).json(dish);
     } catch (e) {
@@ -32,28 +34,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     try {
         const { name, category, ingredients } = req.body;
-
-        // Basic validation
-        if (!name || !Array.isArray(ingredients) || ingredients.length === 0) {
-            return res.status(400).json({ message: 'Name and at least one ingredient are required.' });
-        }
-
-        // Validate each ingredient
+        const newDish = await Dish.create({ name, category });
         for (const ing of ingredients) {
-            if (!ing.name || typeof ing.amount !== 'number' || !ing.unit) {
-                return res.status(400).json({
-                    message: 'Each ingredient must have name, amount (number), and unit.'
-                });
-            }
+            await Ingredient.create({ ...ing, dishId: newDish.id });
         }
+        const fullDish = await Dish.findByPk(newDish.id, { include: ['ingredients'] });
+        res.status(201).json({ message: 'Dish created', dish: fullDish });
 
-        const newDish = new Dish({ name, category, ingredients });
-        await newDish.save();
-
-        res.status(201).json({
-            message: 'Dish created successfully',
-            dish: newDish
-        });
     } catch (e) {
         console.error(e);
         res.status(500).json({ message: 'Failed to create dish' });
@@ -64,13 +51,20 @@ router.post('/', async (req, res) => {
 // PUT update dish
 router.put('/:id', async (req, res) => {
     try {
-        const updatedDish = await Dish.findByIdAndUpdate(
-            req.params.id,
-            req.body,
-            { new: true }
-        );
-        if (!updatedDish) return res.status(404).json({ message: 'Dish not found' });
-        res.status(200).json(updatedDish);
+        const dish = await Dish.findByPk(req.params.id);
+        if (!dish) return res.status(404).json({ message: 'Not found' });
+
+        await dish.update(req.body);
+
+// Optional: delete old ingredients and re-add
+        await Ingredient.destroy({ where: { dishId: dish.id } });
+        for (const ing of req.body.ingredients) {
+            await Ingredient.create({ ...ing, dishId: dish.id });
+        }
+
+        const updated = await Dish.findByPk(dish.id, { include: ['ingredients'] });
+        res.json(updated);
+
     } catch (e) {
         console.error(e);
         res.status(500).send('Failed to update dish');
@@ -80,9 +74,11 @@ router.put('/:id', async (req, res) => {
 // DELETE dish
 router.delete('/:id', async (req, res) => {
     try {
-        const deleted = await Dish.findByIdAndDelete(req.params.id);
-        if (!deleted) return res.status(404).json({ message: 'Dish not found' });
-        res.status(200).json({ message: 'Dish deleted successfully' });
+        const dish = await Dish.findByPk(req.params.id);
+        if (!dish) return res.status(404).json({ message: 'Not found' });
+        await dish.destroy();
+        res.json({ message: 'Deleted' });
+
     } catch (e) {
         console.error(e);
         res.status(500).send('Failed to delete dish');
