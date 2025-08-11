@@ -27,7 +27,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Бесбармаққа ет өз қалауыңызбен",
         "Вырезка конины",
         "Мякоть говядины",
-        "Фарш домашний",
+        "Фарш",
         "Мясо баранины",
         "Қазы",
         "Жая",
@@ -35,7 +35,8 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Печень",
         "Голен",
         "Крылышки",
-        "Филе куриный",
+        "Куриное филе",
+        "Курица Алель",
         "Окорачка капченная",
         "Перепелка",
         "Семга свежая",
@@ -57,14 +58,14 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Сыр комо Кантри",
         "Сыр сметанковый",
         "Сыр пармезан",
-        "Сыр мини мацарелло",
+        "Мини мацарелло",
         "Сыр весовой мацарелло",
         "Сыр фетакса",
         "Сыр комомбер",
         "Сыр дор - блю",
         "Брынза",
         "Козье сыр (Rondale)",
-        "Творожный сыр сливочный",
+        "Творожный сыр Креметте",
         "Творг",
         "Маринованные патисоны",
         "Соленный огурцы",
@@ -74,27 +75,30 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Грецский орех",
         "Праванские травы",
         "Сметана 20%",
-        "Жайлау сливочный 72%",
-        "Сүт (молоко) 3,2 %",
-        "Сливки 33 %",
-        "Мука (дани нан)",
-        "Растительное Масло (маслозавод)",
-        "Дрожжи",
+        "Жайлау сливочное 72%",
+        "Молоко 3,2%",
+        "Сливки 33%",
+        "Мука(дани нан)",
+        "Растительное Масло",
+        "Дрож",
         "Соль",
-        "Перец черный",
+        "Перец чёрный",
         "Перец красный",
         "Кунжут белый",
         "Кунжут черный",
+        "Куркума",
         "Мак",
         "Паприка (приправыч)",
         "Универсальная приправа вегета",
+        "Спецы для дапандже",
         "Приправа для рыбы",
         "Приправа для шашлыка",
         "Специи для курицы",
+        "Специи хмели сунели",
         "Соевый соус",
-        "Соус свит-чили (Aroy)",
+        "Соус свит-чили(Aroy)",
         "Бальзамический крем",
-        "Кристалик(китайский соль)",
+        "Кристалик",
         "Соус дресинг италиано",
         "Соус песто",
         "Соус для цезаря",
@@ -109,6 +113,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Кедровые орешки",
         "Картофельный крахмал",
         "Кукурузный крахмал",
+        "Аджика цинказа",
         "Консервированный ананас",
         "Рис",
         "Оливковое масло",
@@ -118,22 +123,22 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Корейские сухари Каниширо Панко",
         "Мед",
         "Лаваш круглый (тонький)",
-        "Слоенное тесто бездрожевое",
+        "Слоенное тесто",
         "Чипсы принглас",
         "Кукуруза (бандуэль)",
         "Горошек ( бандуэль)",
         "Свежо-замороженый горошек",
         "Маринованные шампиньоны целые",
-        "Фасоль красный",
+        "Фасоль консервированная",
         "Долма (листья винограда)",
-        "Перепелиные яйца",
+        "Перепелиные яйцо",
         "Яйцо",
         "Фри",
         "Картошка пай",
         "Картофельные шарики",
         "Оливки",
         "Маслины",
-        "Багет",
+        "Багет аксай нан",
         "Сироп махито",
         "Сироп тархун",
         "Сироп гранатовый",
@@ -159,27 +164,27 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Укроп",
         "Шпинат",
         "Розмарин свежий",
-        "Тимьян свежий",
+        "Тимьян",
         "Бамбуковые листья",
         "Руккола",
         "Мангольд",
         "Микс салата",
         "Микрозелень горох",
         "Зеленый лук",
-        "Базелик",
-        "Айсбег",
+        "Базилик сушеный",
+        "Айсберг капуста",
         "Брокколи",
         "Цветная капуста",
         "Огурцы",
         "Перец цветафор желтый",
         "Перец цветафор красный",
         "Перец цветафор зеленый",
-        "Перец полугорький",
+        "Полугоркий перец",
         "Перец местный",
         "Перец стручковый (чили)",
         "Кабачки",
         "Баклажан",
-        "Черри красный",
+        "Черри",
         "Черри красный на ветке",
         "Черри желтый на ветке",
         "Жандо",
@@ -191,9 +196,9 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Марковь",
         "Лук",
         "Картошка",
-        "Свекла",
+        "Свекло",
         "Красный лук",
-        "Шампиньоны",
+        "Шампиньоны самые крупные ",
         "Капуста",
         "Имбирь",
         "Авокадо",
@@ -213,6 +218,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Красная смородина",
         "Винаград",
         "Абрикос",
+        "Персик",
         "Манго",
         "Фрукт Дракон (питайя)",
         "Лимон",
@@ -247,9 +253,25 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
     const ingredients = Object.values(consolidatedIngredients);
 
     function sortIngredients(ingredients) {
+        // Prepare a normalized master order list for case-insensitive matching
+        const normalizedOrder = masterIngredientOrder.map(name => name.trim().toLowerCase());
+
         return ingredients.slice().sort((a, b) => {
-            const indexA = masterIngredientOrder.indexOf(a.name);
-            const indexB = masterIngredientOrder.indexOf(b.name);
+            const nameA = a.name.trim().toLowerCase();
+            const nameB = b.name.trim().toLowerCase();
+
+            let indexA = normalizedOrder.indexOf(nameA);
+            let indexB = normalizedOrder.indexOf(nameB);
+
+            // Push unknown ingredients to the bottom
+            if (indexA === -1) indexA = normalizedOrder.length + 1;
+            if (indexB === -1) indexB = normalizedOrder.length + 1;
+
+            // If both have the same order index (either same position or both unknown), sort alphabetically
+            if (indexA === indexB) {
+                return nameA.localeCompare(nameB, 'kk');
+            }
+
             return indexA - indexB;
         });
     }
@@ -284,79 +306,85 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
     const generateDocDefinition = () => {
         const sortedIngredients = sortIngredients(ingredients);
 
-        const dishList = selectedDishes.map((dish, i) => `${i + 1}. ${dish.dish.name}`);
+        const converted = sortedIngredients.map(ing => {
+            let { amount, unit } = ing;
+            unit = unit.toLowerCase();
 
-        // Split ingredients in half
-        const half = Math.ceil(sortedIngredients.length / 2);
-        const left = sortedIngredients.slice(0, half);
-        const right = sortedIngredients.slice(half);
+            if (unit === 'г' && amount >= 1000) {
+                amount = +(amount / 1000).toFixed(2);
+                unit = 'кг';
+            } else if (unit === 'мл' && amount >= 1000) {
+                amount = +(amount / 1000).toFixed(2);
+                unit = 'л';
+            }
 
-        // Pad right column if needed
-        while (right.length < left.length) {
-            right.push({ name: '', amount: '', unit: '' });
-        }
+            // Remove trailing .00
+            if (Number.isInteger(amount)) amount = amount.toString();
 
-        const tableBody = [
-            [
-                { text: '№', bold: true },
-                { text: 'Атауы', bold: true },
-                { text: 'Мөлшері', bold: true },
-                '', // spacer
-                { text: '№', bold: true },
-                { text: 'Атауы', bold: true },
-                { text: 'Мөлшері', bold: true },
-            ],
-        ];
+            return { ...ing, amount, unit };
+        });
 
-        for (let i = 0; i < left.length; i++) {
-            const leftItem = left[i];
-            const rightItem = right[i];
+        const half = Math.ceil(converted.length / 2);
+        const leftCol = converted.slice(0, half);
+        const rightCol = converted.slice(half);
 
-            const format = (item, index) => {
-                if (!item.name) return [{ text: '', colSpan: 3 }, {}, {}]; // empty row
-                const { amount, unit } = formatAmount(Number(item.amount), item.unit);
-                return [
-                    { text: `${index + 1}`, alignment: 'center' },
-                    item.name,
-                    `${amount} ${unit}`
-                ];
-            };
+        const tableBody = [];
+        tableBody.push([
+            { text: '№', style: 'tableHeader', alignment: 'center' },
+            { text: 'Атауы', style: 'tableHeader', alignment: 'center' },
+            { text: 'Мөлшері', style: 'tableHeader', alignment: 'center' },
+            '',
+            { text: '№', style: 'tableHeader', alignment: 'center' },
+            { text: 'Атауы', style: 'tableHeader', alignment: 'center' },
+            { text: 'Мөлшері', style: 'tableHeader', alignment: 'center' }
+        ]);
+
+        for (let i = 0; i < half; i++) {
+            const left = leftCol[i];
+            const right = rightCol[i];
 
             tableBody.push([
-                ...format(leftItem, i),
-                '', // spacer
-                ...format(rightItem, i + half),
+                left ? i + 1 : '',
+                left ? left.name : '',
+                left ? `${left.amount} ${left.unit}` : '',
+                '',
+                right ? half + i + 1 : '',
+                right ? right.name : '',
+                right ? `${right.amount} ${right.unit}` : ''
             ]);
         }
 
-        const content: any[] = [
-            { text: 'SatuFood - @povar.almaty.zhanat', style: 'header' },
-            { text: 'Сатып алу тізімі', style: 'subheader' },
-            { text: 'Таңдалған тағамдар:', style: 'section' },
-            ...dishList.map(text => ({ text, margin: [10, 0, 0, 2] })),
-            { text: 'Ингредиенттер:', style: 'section', margin: [0, 10, 0, 4] },
-            {
-                table: {
-                    widths: ['auto', '*', 'auto', 10, 'auto', '*', 'auto'],
-                    body: tableBody,
-                },
-                layout: 'lightHorizontalLines',
-            },
-        ];
-
         return {
-            content,
+            content: [
+                { text: 'SatuFood - @povar.almaty.zhanat', style: 'header' },
+                { text: 'Сатып алу тізімі', style: 'subheader' },
+                { text: 'Ингредиенттер:', style: 'section', margin: [0, 10, 0, 4] },
+                {
+                    table: {
+                        widths: [25, '*', 60, 15, 25, '*', 60], // wider cols
+                        body: tableBody
+                    },
+                    layout: {
+                        fillColor: (rowIndex) => (rowIndex === 0 ? '#eeeeee' : null),
+                        paddingLeft: () => 6,   // more padding
+                        paddingRight: () => 6,
+                        paddingTop: () => 5,    // taller rows
+                        paddingBottom: () => 5
+                    }
+                }
+            ],
             styles: {
-                header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-                subheader: { fontSize: 14, bold: true, margin: [0, 0, 0, 8] },
-                section: { fontSize: 12, bold: true, margin: [0, 8, 0, 4] },
+                header: { fontSize: 22, bold: true, margin: [0, 0, 0, 14] },
+                subheader: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+                section: { fontSize: 15, bold: true, margin: [0, 8, 0, 6] },
+                tableHeader: { fontSize: 13, bold: true }
             },
             defaultStyle: {
                 font: 'Roboto',
-                fontSize: 10,
+                fontSize: 12 // bigger text in table
             },
             pageSize: 'A4',
-            pageOrientation: 'portrait',
+            pageOrientation: 'portrait'
         };
     };
 

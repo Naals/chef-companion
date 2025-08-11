@@ -1,7 +1,7 @@
 // db.js
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('satuboos_ter_satufood_povar_almaty_zhzanat', 'satuboos_ter_satufood_povar_almaty_zhzanat', 'satuboos_ter_satufood_povar_almaty_zhzanat', {
+const sequelize = new Sequelize('chef_companion_db', 'chef_user', 'chef_pass', {
     host: '127.0.0.1',
     dialect: 'mysql',
 });
