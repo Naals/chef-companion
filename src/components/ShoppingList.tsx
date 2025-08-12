@@ -139,23 +139,6 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Оливки",
         "Маслины",
         "Багет аксай нан",
-        "Сироп махито",
-        "Сироп тархун",
-        "Сироп гранатовый",
-        "Сироп манго-маракуя",
-        "Спрайт",
-        "Алекс с газом",
-        "Томатный сок",
-        "Апельсиновый сок",
-        "Пергамент паклан",
-        "Фальга",
-        "Пищевая пленка",
-        "Бумажная рулоновые салфетки",
-        "Пакет майчка",
-        "Шпажка 20 см",
-        "Шпажка 6 см",
-        "Шпажка для фруктов бисером",
-        "Мята",
         "Листья салата",
         "Лола роса",
         "Кинза",
@@ -224,6 +207,25 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Лимон",
         "Лайм"
     ];
+    const mojito = [
+        "Сироп махито",
+        "Сироп тархун",
+        "Сироп гранатовый",
+        "Сироп манго-маракуя",
+        "Спрайт",
+        "Алекс с газом",
+        "Томатный сок",
+        "Апельсиновый сок",
+        "Пергамент паклан",
+        "Фальга",
+        "Пищевая пленка",
+        "Бумажная рулоновые салфетки",
+        "Пакет майчка",
+        "Шпажка 20 см",
+        "Шпажка 6 см",
+        "Шпажка для фруктов бисером",
+        "Мята"
+    ];
     (pdfMake as any).vfs = pdfFonts.vfs;
 
     const consolidatedIngredients = selectedDishes.reduce((acc, selectedDish) => {
@@ -245,6 +247,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
                     unit: ingredient.unit,
                 };
             }
+
         });
 
         return acc;
@@ -297,7 +300,14 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
             const g = amount % 1000;
             let result = "";
             if (kg > 0) result += `${kg} кг`;
-            if (g > 0) result += ` ${g} г`;
+            if (g > 0) result += ` ${String(g).padStart(3, '0')} г`;
+            return { amount: result.trim(), unit: "" };
+        } else if (unit === 'мл' && amount >= 1000) {
+            const l = Math.floor(amount / 1000);
+            const ml = amount % 1000;
+            let result = "";
+            if (l > 0) result += `${l} л`;
+            if (ml > 0) result += ` ${String(ml).padStart(3, '0')} мл`;
             return { amount: result.trim(), unit: "" };
         }
         return { amount: amount.toFixed(0), unit };
@@ -306,22 +316,19 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
     const generateDocDefinition = () => {
         const sortedIngredients = sortIngredients(ingredients);
 
-        const converted = sortedIngredients.map(ing => {
-            let { amount, unit } = ing;
-            unit = unit.toLowerCase();
+        // Add mojito ingredients to bottom (no amounts/units)
+        const withMojito = [
+            ...sortedIngredients,
+            ...mojito.map(name => ({ name, amount: '', unit: '' }))
+        ];
 
-            if (unit === 'г' && amount >= 1000) {
-                amount = +(amount / 1000).toFixed(2);
-                unit = 'кг';
-            } else if (unit === 'мл' && amount >= 1000) {
-                amount = +(amount / 1000).toFixed(2);
-                unit = 'л';
+        // Use formatAmount to make sure units are displayed correctly
+        const converted = withMojito.map(ing => {
+            if (typeof ing.amount === 'number') {
+                const { amount, unit } = formatAmount(ing.amount, ing.unit);
+                return { ...ing, amount, unit };
             }
-
-            // Remove trailing .00
-            if (Number.isInteger(amount)) amount = amount.toString();
-
-            return { ...ing, amount, unit };
+            return ing; // mojito items
         });
 
         const half = Math.ceil(converted.length / 2);
@@ -346,11 +353,11 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
             tableBody.push([
                 left ? i + 1 : '',
                 left ? left.name : '',
-                left ? `${left.amount} ${left.unit}` : '',
+                left ? `${left.amount} ${left.unit}`.trim() : '',
                 '',
                 right ? half + i + 1 : '',
                 right ? right.name : '',
-                right ? `${right.amount} ${right.unit}` : ''
+                right ? `${right.amount} ${right.unit}`.trim() : ''
             ]);
         }
 
@@ -361,15 +368,15 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
                 { text: 'Ингредиенттер:', style: 'section', margin: [0, 10, 0, 4] },
                 {
                     table: {
-                        widths: [25, '*', 60, 15, 25, '*', 60], // wider cols
+                        widths: [25, '*', 70, 15, 25, '*', 70], // bigger columns for better readability
                         body: tableBody
                     },
                     layout: {
                         fillColor: (rowIndex) => (rowIndex === 0 ? '#eeeeee' : null),
-                        paddingLeft: () => 6,   // more padding
+                        paddingLeft: () => 6,
                         paddingRight: () => 6,
-                        paddingTop: () => 5,    // taller rows
-                        paddingBottom: () => 5
+                        paddingTop: () => 6,
+                        paddingBottom: () => 6
                     }
                 }
             ],
@@ -377,11 +384,11 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
                 header: { fontSize: 22, bold: true, margin: [0, 0, 0, 14] },
                 subheader: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
                 section: { fontSize: 15, bold: true, margin: [0, 8, 0, 6] },
-                tableHeader: { fontSize: 13, bold: true }
+                tableHeader: { fontSize: 14, bold: true }
             },
             defaultStyle: {
                 font: 'Roboto',
-                fontSize: 12 // bigger text in table
+                fontSize: 13 // bigger text
             },
             pageSize: 'A4',
             pageOrientation: 'portrait'
@@ -462,7 +469,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
                     <div>
                         <h3 className="font-semibold mb-2">Таңдалған тағамдар:</h3>
                         <div className="space-y-1 text-sm">
-                            {selectedDishes.map((item, index) => (
+                            {selectedDishes.map((item) => (
                                 <div key={item.id} className="flex justify-between py-1">
                                     <span className="text-sm">{item.dish.name}</span>
                                     <span className="text-sm text-muted-foreground">
@@ -476,8 +483,8 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
                     <div>
                         <h3 className="font-semibold mb-2">Жалпы ингредиенттер:</h3>
                         <div className="space-y-1 text-sm max-h-60 overflow-y-auto">
-                            {ingredients.map((ingredient, index) => (
-                                <div key={index} className="flex justify-between py-1 border-b border-border/50">
+                            {ingredients.map((ingredient) => (
+                                <div key={ingredient.name} className="flex justify-between py-1 border-b border-border/50">
                                     <span>{ingredient.name}</span>
                                     <span className="font-medium">
                                           {typeof ingredient.amount === 'number'
