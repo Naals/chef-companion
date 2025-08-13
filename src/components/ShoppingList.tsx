@@ -59,6 +59,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Сыр сметанковый",
         "Сыр пармезан",
         "Мини мацарелло",
+        "Сыр Моцарелла Tris",
         "Сыр весовой мацарелло",
         "Сыр фетакса",
         "Сыр комомбер",
@@ -76,7 +77,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Праванские травы",
         "Сметана 20%",
         "Жайлау сливочное 72%",
-        "Молоко 3,2%",
+        "Молоко 3.2%",
         "Сливки 33%",
         "Мука(дани нан)",
         "Растительное Масло",
@@ -96,7 +97,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Специи для курицы",
         "Специи хмели сунели",
         "Соевый соус",
-        "Соус свит-чили(Aroy)",
+        "Соус свит-чили (Aroy)",
         "Бальзамический крем",
         "Кристалик",
         "Соус дресинг италиано",
@@ -125,12 +126,15 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Лаваш круглый (тонький)",
         "Слоенное тесто",
         "Чипсы принглас",
-        "Кукуруза (бандуэль)",
-        "Горошек ( бандуэль)",
+        "Кукуруза",
+        "Кукуруза початка",
+        "Горошек(бандуель)",
         "Свежо-замороженый горошек",
         "Маринованные шампиньоны целые",
         "Фасоль консервированная",
         "Долма (листья винограда)",
+        "Листья",
+        "Листья винограда",
         "Перепелиные яйцо",
         "Яйцо",
         "Фри",
@@ -153,6 +157,9 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Мангольд",
         "Микс салата",
         "Микрозелень горох",
+        "Горох",
+        "Горох замороженный",
+        "Горох(бандуэль)",
         "Зеленый лук",
         "Базилик сушеный",
         "Айсберг капуста",
@@ -162,7 +169,7 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
         "Перец цветафор желтый",
         "Перец цветафор красный",
         "Перец цветафор зеленый",
-        "Полугоркий перец",
+        "Грецский орех ",
         "Перец местный",
         "Перец стручковый (чили)",
         "Кабачки",
@@ -316,79 +323,91 @@ export function ShoppingList({selectedDishes, onSaveList}: ShoppingListProps) {
     const generateDocDefinition = () => {
         const sortedIngredients = sortIngredients(ingredients);
 
-        // Add mojito ingredients to bottom (no amounts/units)
         const withMojito = [
             ...sortedIngredients,
             ...mojito.map(name => ({ name, amount: '', unit: '' }))
         ];
 
-        // Use formatAmount to make sure units are displayed correctly
-        const converted = withMojito.map(ing => {
-            if (typeof ing.amount === 'number') {
-                const { amount, unit } = formatAmount(ing.amount, ing.unit);
-                return { ...ing, amount, unit };
+
+        const rowsPerColumn = 27;
+        const pages = [];
+        let globalIndex = 1;
+
+        for (let start = 0; start < withMojito.length; start += rowsPerColumn * 2) {
+            const leftCol = withMojito.slice(start, start + rowsPerColumn).map(ing => {
+                if (typeof ing.amount === 'number') {
+                    const { amount, unit } = formatAmount(ing.amount, ing.unit);
+                    return { ...ing, amount, unit, index: globalIndex++ };
+                }
+                return { ...ing, index: globalIndex++ };
+            });
+
+            const rightCol = withMojito.slice(start + rowsPerColumn, start + rowsPerColumn * 2).map(ing => {
+                if (typeof ing.amount === 'number') {
+                    const { amount, unit } = formatAmount(ing.amount, ing.unit);
+                    return { ...ing, amount, unit, index: globalIndex++ };
+                }
+                return { ...ing, index: globalIndex++ };
+            });
+
+            const maxRows = Math.max(leftCol.length, rightCol.length);
+            const tableBody = [
+                [
+                    { text: '№', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Атауы', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Мөлшері', style: 'tableHeader', alignment: 'center' },
+                    '',
+                    { text: '№', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Атауы', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Мөлшері', style: 'tableHeader', alignment: 'center' }
+                ]
+            ];
+
+            for (let row = 0; row < maxRows; row++) {
+                const left = leftCol[row];
+                const right = rightCol[row];
+                tableBody.push([
+                    left ? left.index : '',
+                    left ? left.name : '',
+                    left ? `${left.amount || ''} ${left.unit || ''}`.trim() : '',
+                    '',
+                    right ? right.index : '',
+                    right ? right.name : '',
+                    right ? `${right.amount || ''} ${right.unit || ''}`.trim() : ''
+                ]);
             }
-            return ing; // mojito items
-        });
 
-        const half = Math.ceil(converted.length / 2);
-        const leftCol = converted.slice(0, half);
-        const rightCol = converted.slice(half);
-
-        const tableBody = [];
-        tableBody.push([
-            { text: '№', style: 'tableHeader', alignment: 'center' },
-            { text: 'Атауы', style: 'tableHeader', alignment: 'center' },
-            { text: 'Мөлшері', style: 'tableHeader', alignment: 'center' },
-            '',
-            { text: '№', style: 'tableHeader', alignment: 'center' },
-            { text: 'Атауы', style: 'tableHeader', alignment: 'center' },
-            { text: 'Мөлшері', style: 'tableHeader', alignment: 'center' }
-        ]);
-
-        for (let i = 0; i < half; i++) {
-            const left = leftCol[i];
-            const right = rightCol[i];
-
-            tableBody.push([
-                left ? i + 1 : '',
-                left ? left.name : '',
-                left ? `${left.amount} ${left.unit}`.trim() : '',
-                '',
-                right ? half + i + 1 : '',
-                right ? right.name : '',
-                right ? `${right.amount} ${right.unit}`.trim() : ''
-            ]);
+            pages.push({
+                table: {
+                    widths: [25, '*', 70, 15, 25, '*', 70],
+                    body: tableBody
+                },
+                layout: {
+                    fillColor: (rowIndex) => (rowIndex === 0 ? '#eeeeee' : null),
+                    paddingLeft: () => 3.5,
+                    paddingRight: () => 3.5,
+                    paddingTop: () => 3.5,
+                    paddingBottom: () => 3.5
+                },
+                pageBreak: start + rowsPerColumn * 2 < withMojito.length ? 'after' : undefined
+            });
         }
+
 
         return {
             content: [
                 { text: 'SatuFood - @povar.almaty.zhanat', style: 'header' },
-                { text: 'Сатып алу тізімі', style: 'subheader' },
-                { text: 'Ингредиенттер:', style: 'section', margin: [0, 10, 0, 4] },
-                {
-                    table: {
-                        widths: [25, '*', 70, 15, 25, '*', 70], // bigger columns for better readability
-                        body: tableBody
-                    },
-                    layout: {
-                        fillColor: (rowIndex) => (rowIndex === 0 ? '#eeeeee' : null),
-                        paddingLeft: () => 6,
-                        paddingRight: () => 6,
-                        paddingTop: () => 6,
-                        paddingBottom: () => 6
-                    }
-                }
+                { text: 'Ингредиенттер:', style: 'section', margin: [0, 5, 0, 2] },
+                ...pages
             ],
             styles: {
                 header: { fontSize: 22, bold: true, margin: [0, 0, 0, 14] },
-                subheader: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-                section: { fontSize: 15, bold: true, margin: [0, 8, 0, 6] },
-                tableHeader: { fontSize: 14, bold: true }
+                section: { fontSize: 12, bold: true, margin: [0, 0, 0, 0] },
+                tableHeader: { fontSize: 11, bold: true }
             },
             defaultStyle: {
                 font: 'Roboto',
-                fontSize: 13 // bigger text
+                fontSize: 11
             },
             pageSize: 'A4',
             pageOrientation: 'portrait'
